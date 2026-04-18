@@ -1,0 +1,8 @@
+venv/
+__pycache__/
+.pytest_cache/
+blockchain_ledger.json
+live_timeline.json
+*timeline.png
+*summary.png
+.kill_signal
