@@ -168,9 +168,10 @@ class Monitor(FileSystemEventHandler):
 
             # ---------- NATIVE DESKTOP ALERT ----------
             try:
+                reason_str = " | ".join(human_reasons)
                 notification.notify(
                     title="🚨 RANSOMWARE DETECTED",
-                    message=f"Malicious encryption blocked on: {os.path.basename(path)}",
+                    message=f"File: {os.path.basename(path)}\nReason: {reason_str}",
                     app_name="Ransomware Defend",
                     timeout=3
                 )
