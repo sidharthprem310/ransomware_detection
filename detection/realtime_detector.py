@@ -143,18 +143,26 @@ class Monitor(FileSystemEventHandler):
 
             # ---------- HUMAN EXPLANATION ----------
             print("\n🧠 INTERPRETATION:")
+            human_reasons = []
             if ent > 6:
-                print("→ High entropy indicates file encryption")
+                reason = "High entropy indicates file encryption"
+                human_reasons.append(reason)
+                print("→ " + reason)
             if rename_freq > 2:
-                print("→ Frequent file renaming detected")
+                reason = "Frequent file renaming detected"
+                human_reasons.append(reason)
+                print("→ " + reason)
             if file_activity > 20:
-                print("→ Rapid file modifications observed")
+                reason = "Rapid file modifications observed"
+                human_reasons.append(reason)
+                print("→ " + reason)
 
             # ---------- BLOCKCHAIN LOGGING ----------
             event_data = {
                 "file": os.path.basename(path),
                 "entropy": round(ent, 3),
-                "shap_reasoning": shap_dict
+                "shap_reasoning": shap_dict,
+                "human_reasons": human_reasons
             }
             blockchain.add_block(event_data)
 

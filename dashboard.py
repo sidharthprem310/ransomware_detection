@@ -2,155 +2,150 @@ import streamlit as st
 import pandas as pd
 import json
 import os
-import subprocess
 import time
 
 # --- Pager Settings ---
-st.set_page_config(page_title="Ransomware Defend Control Center", layout="wide", initial_sidebar_state="expanded")
+st.set_page_config(page_title="Ransomware Defend System", layout="wide", initial_sidebar_state="collapsed")
 
-# Inject Custom Dark Theme Aesthetic
+# Inject Custom Antivirus Dark Theme Aesthetic
 st.markdown("""
 <style>
     .stApp {
-        background-color: #0E1117;
-        color: #C6D0F5;
+        background-color: #121212;
+        color: #E0E0E0;
     }
-    .metric-container {
-        background-color: #1a1a2e;
+    .status-banner-safe {
+        background-color: #1b5e20;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        border: 2px solid #4caf50;
+        margin-bottom: 25px;
+    }
+    .status-banner-danger {
+        background-color: #b71c1c;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        border: 2px solid #f44336;
+        margin-bottom: 25px;
+        animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.7); }
+        70% { box-shadow: 0 0 0 15px rgba(244, 67, 54, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0); }
+    }
+    .threat-card {
+        background-color: #1e1e1e;
         padding: 15px;
-        border-radius: 10px;
-        border-left: 5px solid #e94560;
+        border-radius: 8px;
+        border-left: 4px solid #ff9800;
+        margin-bottom: 10px;
     }
 </style>
 """, unsafe_allow_html=True)
 
-st.title("🛡️ Ransomware Early Detection Dashboard")
-st.markdown("XAI-Driven Behavioral Analysis & Immutable Blockchain Auditing")
+st.title("🛡️ Defender Framework Core")
+st.markdown("Real-time behavioral monitoring and Explainable AI defense.")
+
+
+# --- Data Loaders ---
+ledger = []
+attacks = []
+if os.path.exists("blockchain_ledger.json"):
+    try:
+        with open("blockchain_ledger.json", "r") as f:
+            ledger = json.load(f)
+            attacks = [b for b in reversed(ledger) if isinstance(b.get('event_data'), dict)]
+    except:
+        pass
+
+
+# --- Antivirus Status Banner ---
+if len(attacks) > 0:
+    st.markdown(f"""
+    <div class="status-banner-danger">
+        <h2 style="margin:0; color:white;">🚨 CRITICAL THREAT DETECTED & BLOCKED</h2>
+        <p style="margin:0; color:#ffcdd2;">System intercepted {len(attacks)} ransomware payload(s). OS Preventor engaged.</p>
+    </div>
+    """, unsafe_allow_html=True)
+else:
+    st.markdown("""
+    <div class="status-banner-safe">
+        <h2 style="margin:0; color:white;">✅ YOUR PC IS PROTECTED</h2>
+        <p style="margin:0; color:#c8e6c9;">XAI monitors are active. Background file processes look normal.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
 st.divider()
 
-# --- Sidebar Controls ---
-with st.sidebar:
-    st.header("💻 Terminal Execution")
-    st.info("Run the independent modules in your local terminals to monitor and simulate attacks.")
+col_logs, col_metrics = st.columns([1.2, 1])
+
+# --- Left Column: Live Incident Logs ---
+with col_logs:
+    st.subheader("📋 Active Threat Intelligence Logs")
     
-    st.markdown("**1. Start the Live Guard:**")
-    st.code("py detection/realtime_detector.py", language="bash")
-    
-    st.markdown("**2. Simulate Hacker Payload:**")
-    st.code("py simulation/file_activity_simulator.py", language="bash")
-    
-    st.markdown("**3. Restore Environment:**")
-    st.code("py simulation/file_restore_tool.py", language="bash")
-    
-    st.divider()
-    st.caption("Auto-refreshing live dashboard every 2 seconds...")
+    if attacks:
+        for att in attacks[:8]: # show last 8
+            data = att['event_data']
+            fname = data.get('file', 'Unknown')
+            ent = data.get('entropy', 'N/A')
+            reasons = data.get('human_reasons', ["High Behavioral Anomaly Detected"])
+            timestamp = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(att['timestamp']))
+            
+            # Formatting the human reason bullets
+            reason_bullets = "".join([f"<li>{r}</li>" for r in reasons])
+            
+            st.markdown(f"""
+            <div class="threat-card">
+                <strong style="color:#ffb74d;">Timestamp:</strong> {timestamp} <br/>
+                <strong style="color:#ef5350;">Infected Target:</strong> {fname} <br/>
+                <strong style="color:#90caf9;">Payload Entropy:</strong> {ent} <br/>
+                <strong style="color:#66bb6a;">🧠 AI Diagnostic Reasoning:</strong>
+                <ul style="margin-top: 5px; margin-bottom: 0px; color:#e0e0e0; font-size:14px;">
+                    {reason_bullets}
+                </ul>
+            </div>
+            """, unsafe_allow_html=True)
+    else:
+        st.info("No suspicious activities logged. The system continues to monitor behavior.")
 
 
-# --- Main Dashboard Tabs ---
-tab1, tab2, tab3 = st.tabs(["📊 Live Monitoring", "🔗 Blockchain Ledger", "🧠 XAI Details"])
-
-# Tab 1: Live Monitoring
-with tab1:
-    col_chart, col_alerts = st.columns([2, 1])
+# --- Right Column: Plots & Analytics ---
+with col_metrics:
+    st.subheader("📈 System Behavioral Plots")
     
-    with col_chart:
-        st.subheader("System Entropy Timeline")
-        
-        # Try to load live timeline JSON generated by the detector
+    tab1, tab2 = st.tabs(["Entropy Timeline", "XAI Global Model"])
+    
+    with tab1:
         if os.path.exists("live_timeline.json"):
             try:
                 df_live = pd.read_json("live_timeline.json")
                 if not df_live.empty:
-                    # Plot natively in streamlit using a line chart
                     df_live['time_index'] = df_live['time'] - df_live['time'].min()
                     st.line_chart(df_live.set_index("time_index")["entropy"], use_container_width=True)
                 else:
-                    st.info("No timeline data recorded yet. Run simulator.")
+                    st.caption("Awaiting baseline entropy sweeps...")
             except:
-                st.info("Awaiting live timeline sync...")
+                st.caption("Syncing local filesystem...")
         else:
-            # Fallback to PNG
             if os.path.exists("detection/realtime_timeline.png"):
-                st.image("detection/realtime_timeline.png", caption="Last Recorded Timeline", use_container_width=True)
+                st.image("detection/realtime_timeline.png", use_container_width=True)
             elif os.path.exists("realtime_timeline.png"):
-                st.image("realtime_timeline.png", caption="Last Recorded Timeline", use_container_width=True)
+                st.image("realtime_timeline.png", use_container_width=True)
             else:
-                 st.info("Timeline sync pending start of detector.")
-
-    with col_alerts:
-        st.subheader("🚨 Live Threat Map")
-        # Dynamically map recent blocks to physical front-end notifications
-        if os.path.exists("blockchain_ledger.json"):
-            try:
-                with open("blockchain_ledger.json", "r") as f:
-                    ledger = json.load(f)
-                    # Filter out genesis string, keep only dictionary payloads
-                    attacks = [b for b in reversed(ledger) if isinstance(b.get('event_data'), dict)]
-                    
-                    if attacks:
-                        st.error(f"**{len(attacks)} Malicious Encryptions Intercepted!**", icon="🛑")
-                        for att in attacks[:4]: # Display top 4 recent notifications
-                            fname = att['event_data'].get('file', 'Unknown')
-                            ent = att['event_data'].get('entropy', 'N/A')
-                            st.warning(f"**File:** `{fname}`\n\n**Entropy Spike:** `{ent}`", icon="⚠️")
-                    else:
-                        st.success("System Secure. No active threats.", icon="🛡️")
-            except:
-                st.success("System Secure. No active threats.", icon="🛡️")
-        else:
-            st.success("System Secure. No active threats.", icon="🛡️")
-
-
-# Tab 2: Blockchain Ledger
-with tab2:
-    st.subheader("Immutable Audit Trail (SHA-256)")
-    if os.path.exists("blockchain_ledger.json"):
-        with open("blockchain_ledger.json", "r") as f:
-            try:
-                ledger = json.load(f)
-                
-                # Convert list of dicts to dataframe for beautiful table rendering
-                # Flatten the data structure slightly
-                flat_ledger = []
-                for b in reversed(ledger):
-                    val = b['event_data']
-                    details = val if isinstance(val, str) else f"File: {val.get('file', '')} | Entropy: {val.get('entropy', '')}"
-                    
-                    flat_ledger.append({
-                        "Block #": b['index'],
-                        "Timestamp": time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(b['timestamp'])),
-                        "Event": details,
-                        "Hash": b['hash'][:16] + "..." # Truncated for display
-                    })
-                
-                st.dataframe(pd.DataFrame(flat_ledger), use_container_width=True, hide_index=True)
-            
-            except json.JSONDecodeError:
-                st.warning("Blockchain ledger is currently syncing or unreadable.")
-    else:
-        st.info("No recorded attacks in Blockchain. Ledger is clean.")
-
-# Tab 3: XAI
-with tab3:
-    st.subheader("Game Theory (SHAP) Matrix Evaluation")
-    
-    col1, col2 = st.columns([1, 2])
-    with col1:
-        st.markdown("""
-        **Behavioral Feature Weights:**
-        - **Entropy:** Represents cryptographic disorder.
-        - **Rename Frequency:** Represents mass-extension mapping (`.locked`).
-        - **File Activity:** Represents IO manipulation speeds.
-        """)
-    with col2:
+                 st.caption("Timeline syncing...")
+                 
+    with tab2:
+        st.write("SHAP (SHapley Additive exPlanations) evaluates which logic matrices carry the heaviest classification weight.")
         if os.path.exists("detection/shap_summary.png"):
             st.image("detection/shap_summary.png", use_container_width=True)
         elif os.path.exists("shap_summary.png"):
             st.image("shap_summary.png", use_container_width=True)
         else:
-            st.info("Run the detector to validate a ransomware payload and generate the SHAP global matrix.")
+            st.caption("Waiting for verified ransomware payloads to construct SHAP global matrix.")
 
 # --- Auto Refresh Logic ---
-# Sleep briefly and Rerun script to continuously poll for live json/ledger updates
 time.sleep(2)
 st.rerun()
