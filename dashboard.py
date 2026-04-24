@@ -47,8 +47,27 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.title("🛡️ Defender Framework Core")
-st.markdown("Real-time behavioral monitoring and Explainable AI defense.")
+col_title, col_btn = st.columns([8, 2])
+with col_title:
+    st.title("🛡️ Defender Framework Core")
+    st.markdown("Real-time behavioral monitoring and Explainable AI defense.")
+with col_btn:
+    st.write("") 
+    st.write("") 
+    if st.button("🧹 Clear Threat Logs", use_container_width=True):
+        files_to_wipe = [
+            "blockchain_ledger.json", 
+            "live_timeline.json", 
+            "realtime_timeline.png", 
+            "shap_summary.png", 
+            "detection/realtime_timeline.png", 
+            "detection/shap_summary.png"
+        ]
+        for f in files_to_wipe:
+            if os.path.exists(f): 
+                try: os.remove(f)
+                except: pass
+        st.rerun()
 
 
 # --- Data Loaders ---
