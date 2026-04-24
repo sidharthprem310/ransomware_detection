@@ -3,6 +3,7 @@ import pandas as pd
 import json
 import os
 import time
+import datetime
 
 # --- Pager Settings ---
 st.set_page_config(page_title="Ransomware Defend System", layout="wide", initial_sidebar_state="collapsed")
@@ -66,8 +67,8 @@ if os.path.exists("blockchain_ledger.json"):
 if len(attacks) > 0:
     st.markdown(f"""
     <div class="status-banner-danger">
-        <h2 style="margin:0; color:white;">🚨 CRITICAL THREAT DETECTED & BLOCKED</h2>
-        <p style="margin:0; color:#ffcdd2;">System intercepted {len(attacks)} ransomware payload(s). OS Preventor engaged.</p>
+        <h2 style="margin:0; color:white;">🚨 CRITICAL THREAT DETECTED & LOGGED</h2>
+        <p style="margin:0; color:#ffcdd2;">System intercepted and logged {len(attacks)} ransomware payload(s) dynamically.</p>
     </div>
     """, unsafe_allow_html=True)
 else:
@@ -92,7 +93,7 @@ with col_logs:
             fname = data.get('file', 'Unknown')
             ent = data.get('entropy', 'N/A')
             reasons = data.get('human_reasons', ["High Behavioral Anomaly Detected"])
-            timestamp = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(att['timestamp']))
+            timestamp = datetime.datetime.fromtimestamp(att['timestamp']).strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
             
             # Formatting the human reason bullets
             reason_bullets = "".join([f"<li>{r}</li>" for r in reasons])

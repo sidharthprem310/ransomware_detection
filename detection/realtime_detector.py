@@ -178,13 +178,6 @@ class Monitor(FileSystemEventHandler):
             except:
                 pass # safely ignore if UI thread issues occur during mass loop
 
-            # ---------- PREVENTOR (KILL-SWITCH) ----------
-            if RANSOMWARE_COUNT >= 10:
-                kill_path = os.path.join(BASE_PATH, ".kill_signal")
-                with open(kill_path, "w") as kf:
-                    kf.write("STOP")
-                print("🛡️ MAX THREAT LIMIT REACHED! Deploying Kill-Switch Block.")
-
         # Sync plots globally occasionally so streamlit can fetch them live
         if len(timeline_data) % 5 == 0:
             pd.DataFrame(timeline_data).to_json("live_timeline.json", orient="records")
