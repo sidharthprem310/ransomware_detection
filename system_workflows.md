@@ -1,4 +1,4 @@
-# 🔄 System Workflow Diagram (High Readability 16:9)
+# 🔄 System Workflow Diagram
 
 ```mermaid
 flowchart LR
