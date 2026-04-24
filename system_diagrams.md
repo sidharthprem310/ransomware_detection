@@ -18,15 +18,15 @@ flowchart LR
     %% -------------------------------------
     %% BIG BOLD LAYER BLOCKS
     %% -------------------------------------
-    Monitor["<b>LAYER 1: NATIVE MONITOR</b><hr/>• Watchdog Observer<br/>• File Event Handler<br/>• Ransomware Simulator"]:::L1
+    Monitor["<h1>LAYER 1: NATIVE MONITOR</h1><hr/><h2>• Watchdog Observer<br/>• File Event Handler<br/>• Ransomware Simulator</h2>"]:::L1
 
-    Extract["<b>LAYER 2: EXTRACTION</b><hr/>• Shannon Entropy Math<br/>• Rename Frequency Window<br/>• I/O Speed Tracker"]:::L2
+    Extract["<h1>LAYER 2: EXTRACTION</h1><hr/><h2>• Shannon Entropy Math<br/>• Rename Frequency Window<br/>• I/O Speed Tracker</h2>"]:::L2
 
-    ML["<b>LAYER 3: ML CLASSIFIER</b><hr/>• Random Forest Engine<br/>• Data Normalization<br/>• SHAP Explainer Matrices"]:::L3
+    ML["<h1>LAYER 3: ML CLASSIFIER</h1><hr/><h2>• Random Forest Engine<br/>• Data Normalization<br/>• SHAP Explainer Matrices</h2>"]:::L3
 
-    Forensics["<b>LAYER 4: BLOCKCHAIN</b><hr/>• Passive Audit Logging<br/>• SHA-256 Security Hashes<br/>• Exact Millisecond Sync"]:::L4
+    Forensics["<h1>LAYER 4: BLOCKCHAIN</h1><hr/><h2>• Passive Audit Logging<br/>• SHA-256 Security Hashes<br/>• Exact Millisecond Sync</h2>"]:::L4
 
-    UI["<b>LAYER 5: DASHBOARD</b><hr/>• Streamlit Subsystem<br/>• JSON Timeline Plots<br/>• Plyer Desktop Alerts"]:::L5
+    UI["<h1>LAYER 5: DASHBOARD</h1><hr/><h2>• Streamlit Subsystem<br/>• JSON Timeline Plots<br/>• Plyer Desktop Alerts</h2>"]:::L5
 
     %% -------------------------------------
     %% THICK HORIZONTAL CONNECTIONS

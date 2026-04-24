@@ -15,34 +15,34 @@ flowchart LR
     classDef blockui fill:#F3E5F5,stroke:#6A1B9A,stroke-width:3px,color:#4A148C,font-size:18px
 
     %% INITIALIZATION
-    START([START]):::startNode --> T[Train ML Model]:::process
-    T --> W[Start Watchdog]:::process
+    START(["<h1>START</h1>"]):::startNode --> T["<h2>Train ML Model</h2>"]:::process
+    T --> W["<h2>Start Watchdog</h2>"]:::process
 
     %% DETECTION ENGINE
-    W --> EDecision{File<br/>Event?}:::decision
-    EDecision -- YES --> EF[Extract File Features]:::process
-    EF --> RFP[RF Classifier Prediction]:::process
+    W --> EDecision{"<h2>File<br/>Event?</h2>"}:::decision
+    EDecision -- YES --> EF["<h2>Extract File Features</h2>"]:::process
+    EF --> RFP["<h2>RF Classifier Prediction</h2>"]:::process
     
     EDecision -. NO .-> EDecision
 
     %% THREAT EVALUATION
-    RFP --> RDecision{Malicious?}:::decision
+    RFP --> RDecision{"<h2>Malicious?</h2>"}:::decision
 
     %% Benign Path
-    RDecision -- NO --> LB[Log: Benign Event]:::safe
+    RDecision -- NO --> LB["<h2>Log: Benign Event</h2>"]:::safe
     
     %% Alert Path
-    RDecision -- YES --> FA[Fire System Alert]:::alert
-    FA --> SH[Extract SHAP Matrix]:::alert
+    RDecision -- YES --> FA["<h2>Fire System Alert</h2>"]:::alert
+    FA --> SH["<h2>Extract SHAP Matrix</h2>"]:::alert
 
     %% DIGITAL FORENSICS
-    SH --> LOG[Log to Blockchain]:::blockui
-    LOG --> VFC[Verify Audit Chain]:::blockui
-    VFC --> DN[Push UI Notification]:::blockui
-    DN --> SD[Update Streamlit UX]:::blockui
+    SH --> LOG["<h2>Log to Blockchain</h2>"]:::blockui
+    LOG --> VFC["<h2>Verify Audit Chain</h2>"]:::blockui
+    VFC --> DN["<h2>Push UI Notification</h2>"]:::blockui
+    DN --> SD["<h2>Update Streamlit UX</h2>"]:::blockui
 
     %% FINAL LOOP
-    SD --> NEXT((Next Event)):::startNode
+    SD --> NEXT(("<h1>Next Event</h1>")):::startNode
     LB --> NEXT
     NEXT -.-> EDecision
 
