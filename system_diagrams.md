@@ -1,12 +1,5 @@
-# 🛡️ Main System Architecture (High Readability 16:9)
+# 🛡️ Main System Architecture
 
-The previous diagram compressed the text because it tried to draw dozens of tiny individual boxes inside subgraphs. 
-
-To make this **incredibly bold and readable** for a PowerPoint slide, I have consolidated the entire architecture into 5 massive, high-contrast layer blocks. The text will now render huge, allowing anyone in the back of the room to easily read the modules.
-
-Copy this code and throw it into [Mermaid Live Editor](https://mermaid.live).
-
-```mermaid
 flowchart LR
     %% Define Massive Text Styles
     classDef L1 fill:#E3F2FD,stroke:#1565C0,stroke-width:3px,color:#0D47A1,font-size:20px
