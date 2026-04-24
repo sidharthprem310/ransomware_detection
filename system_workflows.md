@@ -1,9 +1,5 @@
 # 🔄 System Workflow Diagram (High Readability 16:9)
 
-To ensure this workflow is entirely readable on a projector screen, I have stripped out the excessive explanatory text from the node bubbles and simplified the decision gates. This will cause the text inside the Mermaid diagram to scale up massively, producing a sharp, clean flowchart!
-
-Copy this Mermaid code and paste it into [Mermaid Live Editor](https://mermaid.live).
-
 ```mermaid
 flowchart LR
     %% Define Clean Bold Presentation Styles
