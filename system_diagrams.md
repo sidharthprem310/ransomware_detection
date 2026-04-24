@@ -1,5 +1,6 @@
 # 🛡️ Main System Architecture
 
+```mermaid
 flowchart LR
     %% Define Massive Text Styles
     classDef L1 fill:#E3F2FD,stroke:#1565C0,stroke-width:3px,color:#0D47A1,font-size:20px
