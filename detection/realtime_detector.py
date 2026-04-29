@@ -169,12 +169,21 @@ class Monitor(FileSystemEventHandler):
             # ---------- NATIVE DESKTOP ALERT ----------
             try:
                 reason_str = " | ".join(human_reasons)
-                notification.notify(
-                    title="🚨 RANSOMWARE DETECTED",
-                    message=f"File: {os.path.basename(path)}\nReason: {reason_str}",
-                    app_name="Ransomware Defend",
-                    timeout=3
+                
+                # Prevent plyer from blocking the watchdog OS interception thread by running it async
+                def show_toast(title, msg):
+                    try:
+                        notification.notify(title=title, message=msg, app_name="Ransomware Defend", timeout=3)
+                    except:
+                        pass
+
+                import threading
+                toast_thread = threading.Thread(
+                    target=show_toast, 
+                    args=("🚨 RANSOMWARE DETECTED", f"File: {os.path.basename(path)}\nReason: {reason_str}")
                 )
+                toast_thread.daemon = True
+                toast_thread.start()
             except:
                 pass # safely ignore if UI thread issues occur during mass loop
 
