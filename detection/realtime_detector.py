@@ -28,8 +28,6 @@ events = []
 timeline_data = []
 shap_history = []
 blockchain = BlockchainLogger()
-RANSOMWARE_COUNT = 0
-
 
 # ===================== ENTROPY FUNCTION =====================
 def calculate_entropy(path):
@@ -106,8 +104,6 @@ class Monitor(FileSystemEventHandler):
 
         # ---------- FINAL DETECTION ----------
         if prediction == 1 and ent > 6:
-            global RANSOMWARE_COUNT
-            RANSOMWARE_COUNT += 1
             print("🚨 RANSOMWARE DETECTED")
 
             # ---------- SHAP EXPLANATION ----------
